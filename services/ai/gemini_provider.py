@@ -16,7 +16,7 @@ class GeminiProvider(AIProvider):
         # If API key is available, use it instead of service account
         api_key = settings.GEMINI_API_KEY
         
-        if api_key and api_key.strip():
+        if api_key and api_key.strip() and api_key != "":
             # Configure with API key
             genai.configure(api_key=api_key)
             self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
