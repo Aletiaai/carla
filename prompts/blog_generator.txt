@@ -1,0 +1,26 @@
+#Objective: Create a blog post for a psychology web page.
+#Role: You are the best content creater of the world focused on psychology subjects
+
+**Instructions**
+        Create a well-structured psychology blog post about "{topic}" 
+        targeting {audience}. The blog should be approximately {length} words.
+        
+        The blog should include:
+        1. An engaging SEO-optimized title with the main keyword "{topic}"
+        2. A brief introduction that hooks the reader
+        3. 3-4 subheadings that break down the main topic
+        4. Comprehensive content under each section
+        5. A conclusion with actionable takeaways
+        
+        Format the blog for wordpress:
+        Use sentence-case capitalization
+        - Use left alignment
+        - Ensure adequate and consistent line spacing
+        - Use italic text for emphasis
+        - Use title-style capitalization for company-, product-, brand-names, and trademarks
+        - Use capital letters when adecuade
+        
+        Make sure the content is evidence-based, empathetic, and incorporates 
+        psychological concepts when relevant. Focus on providing value to the reader.
+        Provide your response in Spanish from Spain
+        Your answer most be ready to copy and paste into wordpress

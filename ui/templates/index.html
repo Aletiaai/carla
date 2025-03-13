@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psychology Blog Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Psychology Blog Generator</h1>
+        </header>
+        
+        <section class="blog-form">
+            <h2>Generate a New Blog</h2>
+            <form id="blogForm">
+                <div class="form-group">
+                    <label for="topic">Blog Topic:</label>
+                    <input type="text" id="topic" name="topic" placeholder="e.g., Anxiety management techniques" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="audience">Target Audience:</label>
+                    <input type="text" id="audience" name="audience" placeholder="e.g., Young adults, Parents, Professional women" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="length">Blog Length (words):</label>
+                    <input type="number" id="length" name="length" value="800" min="300" max="2000" required>
+                </div>
+                
+                <button type="submit" id="generateBtn">Generate Blog</button>
+            </form>
+        </section>
+
+        <!-- In ui/templates/index.html, replace the blog-preview section with: -->
+        <section class="blog-preview" id="blogPreview" style="display: none;">
+            <h2>Blog Preview (Edit as needed)</h2>
+            <div class="blog-content" id="blogContent" contenteditable="true"></div>
+            <div class="actions">
+                <button id="copyBtn">Copy to Clipboard</button>
+                <button id="saveBtn">Save Blog</button>
+            </div>
+        </section>
+        
+        <!--<section class="blog-preview" id="blogPreview" style="display: none;">
+            <h2>Blog Preview</h2>
+            <div class="blog-content" id="blogContent"></div>
+            <div class="actions">
+                <button id="copyBtn">Copy to Clipboard</button>
+                <button id="saveBtn">Save Blog</button>
+            </div>
+        </section>-->
+        
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Generating your blog...</p>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', path='/js/script.js') }}"></script>
+</body>
+</html>
