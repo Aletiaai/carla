@@ -13,23 +13,33 @@ class GeminiProvider(AIProvider):
         if hasattr(genai, "_configured"):
             delattr(genai, "_configured")
 
-        # Default path to service account key file
-        self.service_account_path = service_account_path or os.path.join(os.getcwd(), "carla-452511-8b972688ef43.json")
-
-        try:
-            # Use service account credentials
-            credentials = service_account.Credentials.from_service_account_file(
-            self.service_account_path,
-            scopes=["https://www.googleapis.com/auth/cloud-platform"]
-            )
+        # If API key is available, use it instead of service account
+        api_key = settings.GEMINI_API_KEY
         
-            # Configure Gemini with credentials
-            genai.configure(credentials=credentials, api_key=None)
+        if api_key and api_key.strip():
+            # Configure with API key
+            genai.configure(api_key=api_key)
             self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
-            print("Successfully initialized GeminiProvider with service account")
-        except Exception as e:
-            print(f"Error initializing GeminiProvider: {e}")
-            raise
+            print("Successfully initialized GeminiProvider with API key")
+        else:
+            # Fall back to service account
+            try:
+                # Default path to service account key file
+                self.service_account_path = service_account_path or os.path.join(os.getcwd(), "carla-452511-8b972688ef43.json")
+
+                # Use service account credentials
+                credentials = service_account.Credentials.from_service_account_file(
+                    self.service_account_path,
+                    scopes=["https://www.googleapis.com/auth/cloud-platform"]
+                )
+            
+                # Configure Gemini with credentials
+                genai.configure(credentials=credentials)
+                self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
+                print("Successfully initialized GeminiProvider with service account")
+            except Exception as e:
+                print(f"Error initializing GeminiProvider: {e}")
+                raise
 
     async def generate_content(self,
                              prompt: str,
