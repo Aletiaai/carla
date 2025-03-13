@@ -63,35 +63,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Copy to clipboard
+    // Replace the copy functionality with this corrected version
     copyBtn.addEventListener('click', function() {
-
         if (!currentBlogData) {
             console.error('No blog data available to copy.');
             return;
         }
+        
+        // Get the current HTML content from the editable div
+        const contentElement = document.getElementById('blogContent');
+        const htmlToCopy = contentElement.innerHTML;
+        //const textToCopy = contentElement.innerText || contentElement.textContent;
 
-         // Copy the edited content instead of the original
-        const textToCopy = blogContent.innerText || blogContent.textContent;
-        // Check if the Clipboard API is supported
+        console.log('HTML content to copy:', htmlToCopy);
+
+        
+        // Debug output to verify we're getting content
+        //console.log('Content to copy:', textToCopy);
+        
         if (navigator.clipboard) {
-            // Use the Clipboard API if supported
-            navigator.clipboard.writeText(textToCopy)
-                .then(() => {
-                    alert('Blog copied to clipboard!');
+            navigator.clipboard.writeText(htmlToCopy)
+            .then(() => {
+                    alert('Blog HTML copied to clipboard!');
                 })
                 .catch(err => {
                     console.error('Error copying to clipboard:', err);
                     alert('Failed to copy to clipboard');
                 });
         } else {
-            // Fallback for browsers that do not support the Clipboard API
             const textarea = document.createElement('textarea');
-            textarea.value = textToCopy;
+            textarea.value = htmlToCopy;
             document.body.appendChild(textarea);
             textarea.select();
             try {
                 document.execCommand('copy');
-                alert('Blog copied to clipboard!');
+                alert('Blog HTML copied to clipboard!');
             } catch (err) {
                 console.error('Error copying to clipboard:', err);
                 alert('Failed to copy to clipboard');
@@ -104,11 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
     saveBtn.addEventListener('click', async function() {
         if (!currentBlogData) return;
 
-        // Get the edited content
-        const editedContent = blogContent.innerHTML;
-        
-        // Update the current blog data with edited content
-        currentBlogData.raw_content = blogContent.innerText || blogContent.textContent;
+        // Update current blog data with HTML content
+        currentBlogData.raw_content = document.getElementById('blogContent').innerHTML;
         
         try {
             const response = await fetch('/api/blogs/save', {
