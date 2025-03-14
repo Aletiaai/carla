@@ -8,6 +8,8 @@ from data.repository import BlogRepository
 from core.config import settings
 from pydantic import BaseModel
 from services.mailerlite_service import MailerLiteService
+from services.wordpress_service import WordPressService
+
 
 router = APIRouter()
 
@@ -89,3 +91,14 @@ async def create_email_campaign(request: dict):
     result = await mailerlite.create_campaign(subject=title, content=content)
     
     return {"status": "success", "campaign": result}
+
+@router.post("/publish-to-wp")
+async def publish_to_wordpress(request: dict):
+    """Create a draft post in WordPress"""
+    content = request.get("content")
+    title = request.get("title")
+    
+    wordpress = WordPressService()
+    result = await wordpress.create_post(title=title, content=content)
+    
+    return {"status": "success", "post": result}

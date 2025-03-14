@@ -162,4 +162,33 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Failed to create email campaign');
         }
     });
+   // WordPress publish handler
+   const publishToWPBtn = document.getElementById('publishToWPBtn');
+   publishToWPBtn.addEventListener('click', async () => {
+       if (!currentBlogData) return;
+       
+       try {
+           const campaign_title = document.getElementById('topic').value;
+           const response = await fetch('/api/blogs/publish-to-wp', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                   content: document.getElementById('blogContent').innerHTML,
+                   title: currentBlogData.title || campaign_title
+               }),
+           });
+           
+           const result = await response.json();
+           if (result.status === 'success') {
+               alert('Blog post created as draft in WordPress!');
+           } else {
+               throw new Error(result.message || 'Unknown error');
+           }
+       } catch (error) {
+           console.error('Error:', error);
+           alert('Failed to publish to WordPress: ' + error.message);
+       }
+   });
 });
