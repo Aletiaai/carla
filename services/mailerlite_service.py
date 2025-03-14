@@ -1,23 +1,23 @@
-import requests
+import mailerlite as MailerLite
 from core.config import settings
 
 class MailerLiteService:
     def __init__(self):
-        self.api_key = settings.MAILERLITE_API_KEY
-        self.base_url = "https://connect.mailerlite.com/api"
-        self.headers = {
-            "X-MailerLite-ApiKey": self.api_key,
-            "Content-Type": "application/json"
-        }
+        self.client = MailerLite.Client({
+            'api_key': settings.MAILERLITE_API_KEY
+        })
     
-    async def create_campaign(self, subject, content, sender_name="Your Company", sender_email="your@email.com"):
-        url = f"{self.base_url}/campaigns"
-        payload = {
-            "subject": subject,
+    async def create_campaign(self, subject, content, sender_name="Aletia", sender_email="marko.garcia@gmail.com"):
+        params = {
+            "name": subject,
+            "language_id": 1,
             "type": "regular",
-            "from": sender_name,
-            "from_email": sender_email,
-            "html": content
+            "emails": [{
+                "subject": subject,
+                "from_name": sender_name,
+                "from": sender_email,
+                "content": content
+            }]
         }
-        response = requests.post(url, json=payload, headers=self.headers)
-        return response.json()
+        
+        return self.client.campaigns.create(params)
