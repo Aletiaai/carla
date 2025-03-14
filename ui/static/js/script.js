@@ -6,13 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyBtn = document.getElementById('copyBtn');
     const saveBtn = document.getElementById('saveBtn');
     const loading = document.getElementById('loading');
-    const emailBtn = document.createElement('button');
+    const emailBtn = document.getElementById('createEmailBtn'); // Just reference the existing button
 
-    emailBtn.id = 'createEmailBtn';
-    emailBtn.className = 'btn btn-secondary';
-    emailBtn.textContent = 'Create Email Campaign';
-    blogPreview.appendChild(emailBtn);
-    
     let currentBlogData = null;
     
     // Generate blog
