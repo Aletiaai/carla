@@ -51,6 +51,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 blogContent.innerHTML = htmlContent;
                 blogPreview.style.display = 'block';
+
+                // Add the email campaign button
+                const emailBtn = document.createElement('button');
+                emailBtn.id = 'createEmailBtn';
+                emailBtn.className = 'btn btn-secondary';
+                emailBtn.textContent = 'Create Email Campaign';
+                blogPreview.appendChild(emailBtn);
+
+                // Email campaign handler
+                emailBtn.addEventListener('click', async () => {
+                    if (!currentBlogData) return;
+                    
+                    try {
+                        const response = await fetch('/api/blogs/create-email', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                content: document.getElementById('blogContent').innerHTML,
+                                title: currentBlogData.title || 'New Campaign'
+                            }),
+                        });
+                        
+                        const result = await response.json();
+                        alert('Email campaign created successfully!');
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Failed to create email campaign');
+                    }
+                });
             } else {
                 alert('Error generating blog: ' + result.message);
             }

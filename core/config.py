@@ -10,6 +10,9 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY")
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY")
 
+    #Mail campaigns setting on mailerlite
+    MAILERLITE_API_KEY: str = os.getenv("MAILERLITE_API_KEY", "")
+
     #Database settings
     FIRESTORE_PROJECT_ID: str = os.getenv("FIRESTORE_PROJECT_ID", "")
 

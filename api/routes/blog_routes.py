@@ -7,6 +7,7 @@ from services.blog_service.generator import BlogGenerator
 from data.repository import BlogRepository
 from core.config import settings
 from pydantic import BaseModel
+from services.mailerlite_service import MailerLiteService
 
 router = APIRouter()
 
@@ -78,3 +79,13 @@ async def list_blogs(
             status_code=500,
             content={"status": "error", "message": str(e)}
         )
+
+@router.post("/create-email")
+async def create_email_campaign(request: dict):
+    content = request.get("content")
+    title = request.get("title")
+    
+    mailerlite = MailerLiteService()
+    result = await mailerlite.create_campaign(subject=title, content=content)
+    
+    return {"status": "success", "campaign": result}
