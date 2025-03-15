@@ -93,12 +93,20 @@ async def create_email_campaign(request: dict):
     return {"status": "success", "campaign": result}
 
 @router.post("/publish-to-wp")
-async def publish_to_wordpress(request: dict):
+async def publish_to_wordpress(request: dict = Body(...)):
     """Create a draft post in WordPress"""
-    content = request.get("content")
-    title = request.get("title")
-    
-    wordpress = WordPressService()
-    result = await wordpress.create_post(title=title, content=content)
-    
-    return {"status": "success", "post": result}
+    try:
+        content = request.get("content")
+        title = request.get("title")
+        
+        wordpress = WordPressService()
+        result = await wordpress.create_post(title=title, content=content)
+        
+        return JSONResponse(content={"status": "success", "post": result})
+    except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
+        return JSONResponse(
+            status_code=500,
+            content={"status": "error", "message": str(e),"details": error_details}
+        )

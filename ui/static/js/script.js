@@ -180,6 +180,13 @@ document.addEventListener('DOMContentLoaded', function() {
                }),
            });
            
+           // Add this to check response status
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Server error:', errorText);
+                throw new Error(`Server error: ${response.status}`);
+            }
+
            const result = await response.json();
            if (result.status === 'success') {
                alert('Blog post created as draft in WordPress!');
