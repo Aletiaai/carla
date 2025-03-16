@@ -16,11 +16,7 @@ Instructions:
   - Ensure the content is evidence-based, empathetic, and provides value to the reader. Incorporate psychological concepts where relevant.  
 
 - SEO Elements:  
-  - Include the main keyword "{topic}" naturally in the title, first paragraph, and subheadings.  
-  - At the end of the article, provide:  
-    - A meta description (50-160 characters) in Spanish with the main keyword.  
-    - Suggestions for 2-3 internal links to related articles on the website.  
-    - Suggestions for 1-2 external links to authoritative sources.  
+  - Include the main keyword "{topic}" naturally in the title, first paragraph, and subheadings.
 
 - Formatting for WordPress:  
   - Use sentence-case capitalization for the title and subheadings.  

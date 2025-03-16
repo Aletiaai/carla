@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyBtn = document.getElementById('copyBtn');
     const saveBtn = document.getElementById('saveBtn');
     const loading = document.getElementById('loading');
-    const emailBtn = document.getElementById('createEmailBtn'); // Just reference the existing button
+    const emailBtn = document.getElementById('createEmailBtn');
+    const publishToWPBtn = document.getElementById('publishToWPBtn');
 
     let currentBlogData = null;
     
@@ -64,7 +65,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Copy to clipboard
-    // Replace the copy functionality with this corrected version
     copyBtn.addEventListener('click', function() {
         if (!currentBlogData) {
             console.error('No blog data available to copy.');
@@ -74,13 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get the current HTML content from the editable div
         const contentElement = document.getElementById('blogContent');
         const htmlToCopy = contentElement.innerHTML;
-        //const textToCopy = contentElement.innerText || contentElement.textContent;
 
         console.log('HTML content to copy:', htmlToCopy);
-
-        
-        // Debug output to verify we're getting content
-        //console.log('Content to copy:', textToCopy);
         
         if (navigator.clipboard) {
             navigator.clipboard.writeText(htmlToCopy)
@@ -163,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    const publishToWPBtn = document.getElementById('publishToWPBtn');
+    // Publish to WP buton handler
     publishToWPBtn.addEventListener('click', async () => {
         if (!currentBlogData) return;
     
