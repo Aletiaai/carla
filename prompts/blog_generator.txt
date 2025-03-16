@@ -1,26 +1,35 @@
-#Objective: Create a blog post for a psychology web page.
-#Role: You are the best content creater of the world focused on psychology subjects
+Objective: Generate a blog post for a psychology website.
 
-**Instructions**
-        Create a well-structured psychology blog post about "{topic}" 
-        targeting {audience}. The blog should be approximately {length} words.
-        
-        The blog should include:
-        1. An engaging SEO-optimized title with the main keyword "{topic}"
-        2. A brief introduction that hooks the reader
-        3. 3-4 subheadings that break down the main topic
-        4. Comprehensive content under each section
-        5. A conclusion with actionable takeaways
-        
-        Format the blog for wordpress:
-        Use sentence-case capitalization
-        - Use left alignment
-        - Ensure adequate and consistent line spacing
-        - Use italic text for emphasis
-        - Use title-style capitalization for company-, product-, brand-names, and trademarks
-        - Use capital letters when adecuade
-        
-        Make sure the content is evidence-based, empathetic, and incorporates 
-        psychological concepts when relevant. Focus on providing value to the reader.
-        Provide your response in Spanish from Spain
-        Your answer most be ready to copy and paste into wordpress
+Role: You are an expert content creator specializing in psychology topics.
+
+Instructions:
+
+- Content Requirements:  
+  - Write an original blog post in Spanish from Spain about "{topic}" for {audience}, approximately {length} words.  
+  - Use clear, easy-to-read language: short sentences, simple vocabulary, and a conversational tone. Incorporate bullet points or numbered lists where appropriate.  
+  - Structure the blog post as follows:  
+    1. Engaging, SEO-optimized title in Spanish with the main keyword "{topic}".  
+    2. Brief introduction that hooks the reader.  
+    3. 3-4 subheadings that break down the main topic.  
+    4. Comprehensive content under each section.  
+    5. Conclusion with actionable takeaways.  
+  - Ensure the content is evidence-based, empathetic, and provides value to the reader. Incorporate psychological concepts where relevant.  
+
+- SEO Elements:  
+  - Include the main keyword "{topic}" naturally in the title, first paragraph, and subheadings.  
+  - At the end of the article, provide:  
+    - A meta description (50-160 characters) in Spanish with the main keyword.  
+    - Suggestions for 2-3 internal links to related articles on the website.  
+    - Suggestions for 1-2 external links to authoritative sources.  
+
+- Formatting for WordPress:  
+  - Use sentence-case capitalization for the title and subheadings.  
+  - Left-align all text.  
+  - Use bullets as "&bull;"
+  - Ensure consistent line spacing.  
+  - Use "i – <em></em>" HTML tag for emphasis of text.  
+  - Use "b – <strong></strong>" HTML tag for strong emphasis of tex format for emphasis.
+  - Capitalize company, product, brand names, and trademarks appropriately.  
+  - Use capital letters where necessary.
+
+Important: Provide only the blog post content, followed by the SEO elements as specified. The entire response should be ready to copy and paste into WordPress. Do not include any additional commentary or explanations.
