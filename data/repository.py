@@ -8,7 +8,7 @@ class BlogRepository:
     
     def __init__(self):
         db = Database()
-        self.collection = db.get_collection('blogs')
+        self.collection = db.get_collection('carla_memoria')
         
     async def save_blog(self, blog_data: Dict[str, Any], user_id: str) -> str:
         """Save a blog to the database"""

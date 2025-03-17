@@ -9,7 +9,6 @@ class Database:
         if cls._instance is None:
             cls._instance = super(Database, cls).__new__(cls)
             cls._instance.client = firestore.Client(
-                project=settings.FIRESTORE_PROJECT_ID
             )
         return cls._instance
     
