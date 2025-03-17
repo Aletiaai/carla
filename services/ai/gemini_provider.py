@@ -1,13 +1,11 @@
 from .base import AIProvider
-from google.oauth2 import service_account  #For using service account
 import google.generativeai as genai
 from core.config import settings
-import os                                   #For using service account
 
 class GeminiProvider(AIProvider):
     """Implementation of AI provider using Google Gemini's API"""
 
-    def __init__(self, service_account_path: str = None):
+    def __init__(self):
        
         # Clear any existing configuration
         if hasattr(genai, "_configured"):
@@ -24,19 +22,9 @@ class GeminiProvider(AIProvider):
         else:
             # Fall back to service account
             try:
-                # Default path to service account key file
-                self.service_account_path = service_account_path or os.path.join(os.getcwd(), "carla-452511-8b972688ef43.json")
-
-                # Use service account credentials
-                credentials = service_account.Credentials.from_service_account_file(
-                    self.service_account_path,
-                    scopes=["https://www.googleapis.com/auth/cloud-platform"]
-                )
-            
-                # Configure Gemini with credentials
-                genai.configure(credentials=credentials)
+                genai.configure()  # No arguments needed
                 self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
-                print("Successfully initialized GeminiProvider with service account")
+                print("Successfully initialized GeminiProvider with service account from environment variable")
             except Exception as e:
                 print(f"Error initializing GeminiProvider: {e}")
                 raise
