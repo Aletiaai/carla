@@ -9,7 +9,7 @@ Instructions:
   - Use clear, easy-to-read language: short sentences, simple vocabulary, and a conversational tone. Incorporate bullet points or numbered lists where appropriate.  
   - Structure the blog post as follows:  
     1. Engaging, SEO-optimized title in Spanish with the main keyword "{topic}".  
-    2. Brief introduction that hooks the reader.  
+    2. Brief introduction that hooks the reader, basing this introduction on the following personal story: "{personal_story}"
     3. 3-4 subheadings that break down the main topic.  
     4. Comprehensive content under each section.  
     5. Conclusion with actionable takeaways.  
@@ -23,9 +23,9 @@ Instructions:
   - Left-align all text.  
   - Use bullets as "&bull;"
   - Ensure consistent line spacing.  
-  - Use "i – <em></em>" HTML tag for emphasis of text.  
-  - Use "b – <strong></strong>" HTML tag for strong emphasis of tex format for emphasis.
+  - Use "<em></em>" HTML tag for emphasis of text.  
+  - Use "<strong></strong>" HTML tag for strong emphasis of tex format for emphasis.
   - Capitalize company, product, brand names, and trademarks appropriately.  
   - Use capital letters where necessary.
 
-Important: Provide only the blog post content, followed by the SEO elements as specified. The entire response should be ready to copy and paste into WordPress. Do not include any additional commentary or explanations.
+Important: Provide only the blog post content, where the SEO elements as specified are embedded along the post content. The entire response should be ready to copy and paste into WordPress. Do not include any additional commentary or explanations.

@@ -7,7 +7,7 @@ class MailerLiteService:
             'api_key': settings.MAILERLITE_API_KEY
         })
     
-    async def create_campaign(self, subject, content, sender_name="Aletia", sender_email="marko.garcia@gmail.com"):
+    async def create_campaign(self, subject, content, sender_name="Gema", sender_email="marko.garcia@gmail.com"):
         params = {
             "name": subject,
             "language_id": 1,

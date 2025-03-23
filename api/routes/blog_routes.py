@@ -31,6 +31,7 @@ class BlogGenerationRequest(BaseModel):
     audience: str
     length: int = settings.DEFAULT_BLOG_LENGTH
     user_id: str = "default_user"  # In a real app, get this from auth
+    personal_story: str = ""
 
 class BlogUpdateRequest(BaseModel):
     blog_id: str
@@ -49,7 +50,8 @@ async def generate_blog(
         blog_content = await blog_generator.generate_blog(
             request.topic,
             request.audience,
-            request.length
+            request.length,
+            request.personal_story
         )
         
         # Prepare data for storage

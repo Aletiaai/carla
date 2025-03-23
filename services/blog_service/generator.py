@@ -10,19 +10,19 @@ class BlogGenerator:
     def __init__(self, ai_provider: AIProvider):
         self.ai_provider = ai_provider
         
-    async def generate_blog(self, topic: str, audience: str, length: int) -> Dict[str, Any]:
+    async def generate_blog(self, topic: str, audience: str, length: int, personal_story: str) -> Dict[str, Any]:
         """Generate a complete blog based on given parameters"""
-        prompt = self._create_blog_prompt(topic, audience, length)
+        prompt = self._create_blog_prompt(topic, audience, length, personal_story)
         content = await self.ai_provider.generate_content(prompt, max_tokens=2500)
         return self._structure_blog_content(content)
         
-    def _create_blog_prompt(self, topic: str, audience: str, length: int) -> str:
+    def _create_blog_prompt(self, topic: str, audience: str, length: int, personal_story: str) -> str:
         """Loads an optimized prompt for blog generation from a file in the prompts directory"""
         try:
             filename = "blog_generator.txt"
             with open(os.path.join(PROMPTS_DIR, filename), "r", encoding='utf-8') as f:
                 prompt_template = f.read().strip() # Added strip() to remove any trailing whitespace
-                prompt_completed = prompt_template.format(topic = topic, audience = audience, length = length)
+                prompt_completed = prompt_template.format(topic = topic, audience = audience, length = length, personal_story = personal_story)
                 return prompt_completed
         except Exception as e:
             print(f"Error loading prompt file {filename}: {str(e)}")

@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const topic = document.getElementById('topic').value;
         const audience = document.getElementById('audience').value;
         const length = document.getElementById('length').value;
+        const personalStory = document.getElementById('personalStory').value;
         
         // Show loading spinner
         loading.style.display = 'block';
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     topic: topic,
                     audience: audience,
                     length: parseInt(length),
+                    personal_story: personalStory,
                     user_id: 'default_user' // In a real app, get from auth
                 })
             });
@@ -102,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-// Replace your current saveBtn event handler with this:
 saveBtn.addEventListener('click', async function() {
     if (!currentBlogData || !currentBlogData.id) {
         alert('No blog data available to save.');

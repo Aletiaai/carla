@@ -24,7 +24,6 @@ class Settings(BaseSettings):
     DEFAULT_BLOG_LENGTH: int = 2500
     DEFAULT_MODEL: str = os.getenv("DEFAULT_MODEL", "gemini")
 
-    # core/config.py (add these lines)
     # WordPress settings
     WP_API_URL: str = os.getenv("WP_API_URL", "")
     WP_USERNAME: str = os.getenv("WP_USERNAME", "")
