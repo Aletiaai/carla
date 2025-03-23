@@ -9,7 +9,7 @@ from core.config import settings
 from pydantic import BaseModel
 from services.mailerlite_service import MailerLiteService
 from services.wordpress_service import WordPressService
-
+import re
 
 router = APIRouter()
 
@@ -114,12 +114,26 @@ async def save_blog(
 @router.post("/create-email")
 async def create_email_campaign(request: dict):
     content = request.get("content")
-    title = request.get("title")
-    
+    title = extract_title_from_content(content)
+    campaign_content = extract_campaign_content(content)
+
     mailerlite = MailerLiteService()
-    result = await mailerlite.create_campaign(subject=title, content=content)
+    result = await mailerlite.create_campaign(subject=title, content=campaign_content)
     
     return {"status": "success", "campaign": result}
+def extract_title_from_content(content: str) -> str:
+    """Extracts the title from the HTML content."""
+    match = re.search(r'<strong>(.*?)<\/strong>', content)
+    if match:
+        return match.group(1).strip()
+    return ""
+
+def extract_campaign_content(content: str) -> str:
+    """Extracts the first paragraph from the full HTML content string."""
+    matches = re.findall(r'<p style="text-align: left;">(.*?)</p>', content)
+    if len(matches) >= 2:
+        return matches[1].strip()
+    return ""
 
 @router.post("/publish-to-wp")
 async def publish_to_wordpress(request: dict = Body(...)):
@@ -147,29 +161,3 @@ async def publish_to_wordpress(request: dict = Body(...)):
             status_code=500,
             content={"status": "error", "message": str(e),"details": error_details}
         )
-    
-"""
-@router.post("/save")
-async def save_blog(
-    request: BlogUpdateRequest,
-    blog_repository: BlogRepository = Depends(get_blog_repository)
-):
-    #Save the final edited content of a blog
-    try:
-        success = await blog_repository.update_final_content(
-            request.blog_id,
-            request.final_content
-        )
-        
-        if success:
-            return JSONResponse(content={"status": "success", "blog_id": request.blog_id})
-        else:
-            return JSONResponse(
-                status_code=404,
-                content={"status": "error", "message": "Blog not found or update failed"}
-            )
-    except Exception as e:
-        return JSONResponse(
-            status_code=500,
-            content={"status": "error", "message": str(e)}
-        )"""
