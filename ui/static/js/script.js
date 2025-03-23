@@ -102,37 +102,58 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Save blog
-    saveBtn.addEventListener('click', async function() {
-        if (!currentBlogData) return;
+// Replace your current saveBtn event handler with this:
+saveBtn.addEventListener('click', async function() {
+    if (!currentBlogData || !currentBlogData.id) {
+        alert('No blog data available to save.');
+        console.error('❌ Error: currentBlogData is missing or has no ID.', currentBlogData);
+        return;
+    }
 
-        // Update current blog data with HTML content
-        currentBlogData.raw_content = document.getElementById('blogContent').innerHTML;
-        
-        try {
-            const response = await fetch('/api/blogs/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    blog_data: currentBlogData,
-                    user_id: 'default_user' // In a real app, get from auth
-                })
-            });
-            
-            const result = await response.json();
-            
-            if (result.status === 'success') {
-                alert('Blog saved successfully!');
-            } else {
-                alert('Error saving blog: ' + result.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error saving blog. Please try again.');
+    // Get the edited content
+    const finalContent = document.getElementById('blogContent').innerHTML;
+
+    // Debugging logs
+    console.log('🔵 Sending Save Request with:');
+    console.log('   - blog_id:', currentBlogData.id);
+    console.log('   - final_content length:', finalContent.length);
+
+    try {
+        const response = await fetch('/api/blogs/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                blog_id: currentBlogData.id,
+                final_content: finalContent,
+                user_id: 'default_user' // Optional, if needed
+            })
+        });
+
+        console.log('📡 Server response status:', response.status);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('❌ Server error:', errorText);
+            throw new Error(`Server error: ${response.status} - ${errorText}`);
         }
-    });
+
+        const result = await response.json();
+        console.log('✅ Save result:', result);
+
+        if (result.status === 'success') {
+            alert('Blog saved successfully!');
+        } else {
+            throw new Error(result.message || 'Unknown error');
+        }
+    } catch (error) {
+        console.error('🔥 Error saving blog:', error);
+        alert('Error saving blog: ' + error.message);
+    }
+});
+
+
     // Email campaign handler
     emailBtn.addEventListener('click', async () => {
         if (!currentBlogData) return;
