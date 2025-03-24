@@ -111,8 +111,10 @@ saveBtn.addEventListener('click', async function() {
         return;
     }
 
-    // Get the edited content
-    const finalContent = document.getElementById('blogContent').innerHTML;
+    // Get the edited content as plain text
+    const blogContentElement = document.getElementById('blogContent');
+    const finalContent = blogContentElement.textContent || blogContentElement.innerText;
+
 
     // Debugging logs
     console.log('🔵 Sending Save Request with:');

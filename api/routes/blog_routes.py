@@ -116,23 +116,25 @@ async def create_email_campaign(request: dict):
     content = request.get("content")
     title = extract_title_from_content(content)
     campaign_content = extract_campaign_content(content)
+    print(title)
+    print(campaign_content)
 
     mailerlite = MailerLiteService()
     result = await mailerlite.create_campaign(subject=title, content=campaign_content)
-    
     return {"status": "success", "campaign": result}
+
 def extract_title_from_content(content: str) -> str:
     """Extracts the title from the HTML content."""
-    match = re.search(r'<strong>(.*?)<\/strong>', content)
+    match = re.search(r'<h1>(.*?)<\/h1>', content)
     if match:
         return match.group(1).strip()
     return ""
 
 def extract_campaign_content(content: str) -> str:
     """Extracts the first paragraph from the full HTML content string."""
-    matches = re.findall(r'<p style="text-align: left;">(.*?)</p>', content)
-    if len(matches) >= 2:
-        return matches[1].strip()
+    match = re.search(r'<\/h1><br><br>(.*?)<br><br><h2>', content)
+    if match:
+        return match.group(1).strip()
     return ""
 
 @router.post("/publish-to-wp")

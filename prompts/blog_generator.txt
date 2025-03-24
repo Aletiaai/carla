@@ -22,10 +22,33 @@ Instructions:
   - Use sentence-case capitalization for the title and subheadings.  
   - Left-align all text.  
   - Use bullets as "&bull;"
-  - Ensure consistent line spacing.  
-  - Use "<em></em>" HTML tag for emphasis of text.  
-  - Use "<strong></strong>" HTML tag for strong emphasis of tex format for emphasis.
+  - Ensure consistent line spacing, use only one line space after each title or subtitle.  
+  - Use formating elements described below for emphasis of text.  
   - Capitalize company, product, brand names, and trademarks appropriately.  
   - Use capital letters where necessary.
 
-Important: Provide only the blog post content, where the SEO elements as specified are embedded along the post content. The entire response should be ready to copy and paste into WordPress. Do not include any additional commentary or explanations.
+Important: 
+-use only the following formating elements:
+<b>: Makes text bold
+<em>: Emphasizes text, usually in italics
+<small>: Makes text smaller
+<del>: Strikes through text
+<ins>: Highlights inserted text, often underlined
+<sub>: Displays subscript text
+<sup>: Displays superscript text
+<u>: Underlines text
+<br> tag defines a line break, and is an empty element without a closing tag
+<h1> - <h6>: Represent various heading levels for text
+An unordered list starts with the <ul> tag. Each list item starts with the <li> tag. example:
+<ul>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+An ordered list starts with the <ol> tag. Each list item starts with the <li> tag. Example:
+<ol>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+-Provide only the blog post content, where the SEO elements as specified are embedded along the post content. The entire response should be ready to copy and paste into WordPress. Do not include any additional commentary or explanations.
