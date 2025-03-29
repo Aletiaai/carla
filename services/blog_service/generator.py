@@ -1,4 +1,5 @@
 import os
+import re
 from services.ai.base import AIProvider
 from typing import Dict, Any
 

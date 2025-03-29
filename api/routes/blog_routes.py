@@ -1,29 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException, Body, Request
 from fastapi.responses import JSONResponse
 from typing import Dict, Any
-from services.ai.openai_provider import OpenAIProvider
-from services.ai.gemini_provider import GeminiProvider
-from services.blog_service.generator import BlogGenerator
 from data.repository import BlogRepository
 from core.config import settings
 from pydantic import BaseModel
-from services.mailerlite_service import MailerLiteService
-from services.wordpress_service import WordPressService
+from services.mailerlite_service.campaign_creator import extract_title_from_content, extract_campaign_content
+import traceback
+from . import dependencies
 import re
+from services.blog_service.generator import BlogGenerator
+
 
 router = APIRouter()
-
-# Dependency for AI provider
-def get_ai_provider():
-    return GeminiProvider()
-
-# Dependency for blog generator
-def get_blog_generator(ai_provider: OpenAIProvider = Depends(get_ai_provider)):
-    return BlogGenerator(ai_provider)
-
-# Dependency for blog repository
-def get_blog_repository():
-    return BlogRepository()
 
 # Request models
 class BlogGenerationRequest(BaseModel):
@@ -41,8 +29,8 @@ class BlogUpdateRequest(BaseModel):
 @router.post("/generate")
 async def generate_blog(
     request: BlogGenerationRequest,
-    blog_generator: BlogGenerator = Depends(get_blog_generator),
-    blog_repository: BlogRepository = Depends(get_blog_repository)
+    blog_generator: BlogGenerator = Depends(dependencies.get_blog_generator),
+    blog_repository: BlogRepository = Depends(dependencies.get_blog_repository)
 ):
     """Generate a blog post based on given parameters and save initial version"""
     try:
@@ -80,7 +68,7 @@ async def generate_blog(
 @router.post("/save")
 async def save_blog(
     request: BlogUpdateRequest,
-    blog_repository: BlogRepository = Depends(get_blog_repository)
+    blog_repository: BlogRepository = Depends(dependencies.get_blog_repository)
 ):
     """Save the final edited content of a blog"""
     try:
@@ -112,33 +100,24 @@ async def save_blog(
         )
     
 @router.post("/create-email")
-async def create_email_campaign(request: dict):
-    content = request.get("content")
-    title = extract_title_from_content(content)
-    campaign_content = extract_campaign_content(content)
-    print(title)
-    print(campaign_content)
+async def create_email_campaign(request: dict, mailerlite = Depends(dependencies.get_mailerlite_service)):
+    try:
+        content = request.get("content")
+        title = extract_title_from_content(content)
+        campaign_content = extract_campaign_content(content)
+        print(title)
+        print(campaign_content)
 
-    mailerlite = MailerLiteService()
-    result = await mailerlite.create_campaign(subject=title, content=campaign_content)
-    return {"status": "success", "campaign": result}
+        result = await mailerlite.create_campaign(subject=title, content=campaign_content)
+        return {"status": "success", "campaign": result}
+    except Exception as e:
+        print(f"Error creating email campaign: {str(e)}")
+        return {"status": "error", "message": "Internal server error", "details": str(e)}
+        
 
-def extract_title_from_content(content: str) -> str:
-    """Extracts the title from the HTML content."""
-    match = re.search(r'<h1>(.*?)<\/h1>', content)
-    if match:
-        return match.group(1).strip()
-    return ""
-
-def extract_campaign_content(content: str) -> str:
-    """Extracts the first paragraph from the full HTML content string."""
-    match = re.search(r'<\/h1><br><br>(.*?)<br><br><h2>', content)
-    if match:
-        return match.group(1).strip()
-    return ""
 
 @router.post("/publish-to-wp")
-async def publish_to_wordpress(request: dict = Body(...)):
+async def publish_to_wordpress(request: dict = Body(...), wordpress = Depends(dependencies.get_wordpress_service)):
     """Create a draft post in WordPress"""
     try:
         content = request.get("content")
@@ -149,8 +128,6 @@ async def publish_to_wordpress(request: dict = Body(...)):
                 status_code=400,
                 content={"status": "error", "message": "Content and title are required"}
             )
-        
-        wordpress = WordPressService()
         result = await wordpress.create_post(title=title, content=content)
         
         return JSONResponse(content={"status": "success", "post": result})

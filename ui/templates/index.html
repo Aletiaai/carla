@@ -3,58 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psychology Blog Generator</title>
+    <title>Generador de Blog</title>
     <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Psychology Blog Generator</h1>
+            <h1>Generador de Blog</h1>
         </header>
         
         <section class="blog-form">
-            <h2>Generate a New Blog</h2>
+            <h2>Ingresa la información requerida en cada uno de los siguientes campos.</h2>
             <form id="blogForm">
                 <div class="form-group">
-                    <label for="topic">Blog Topic:</label>
-                    <input type="text" id="topic" name="topic" placeholder="e.g., Anxiety management techniques" required>
+                    <label for="topic">Tema del Blog:</label>
+                    <input type="text" id="topic" name="topic" placeholder="ejem., técnicas manejo de ansiedad" required>
                 </div>
                 
                 <div class="form-group audience-length-row"> 
                     <div class="audience-group">
-                        <label for="audience">Target Audience:</label>
-                        <input type="text" id="audience" name="audience" placeholder="e.g., Young adults, Parents, Professional women" required>
+                        <label for="audience">Audiencia Objetivo:</label>
+                        <input type="text" id="audience" name="audience" placeholder="ejem., Adultos jóvenes, Padres, Mujeres solteras" required>
                     </div>
                     <div class="length-group">
-                        <label for="length">Blog Length (words):</label>
+                        <label for="length">Longitud del Blog (palabras):</label>
                         <input type="number" id="length" name="length" value="800" min="300" max="2000" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="personalStory">Your Personal Story (for Introduction):</label>
-                    <textarea id="personalStory" name="personalStory" rows="5" placeholder="Share a brief personal anecdote or experience related to the topic. This will be used to create a relatable introduction."></textarea>
+                    <label for="personalStory">Tu Historia Personal (para la Introducción):</label>
+                    <textarea id="personalStory" name="personalStory" rows="5" placeholder="comparte una breve acécdota o experiencia relacionada con el tema. Esta será usada para crear una introducción personalizada."></textarea>
                 </div>
                 
-                <button type="submit" id="generateBtn">Generate Blog</button>
+                <button type="submit" id="generateBtn">Generar Blog</button>
             </form>
         </section>
         
         <section class="blog-preview" id="blogPreview" style="display: none;">
-            <h2>Blog Preview (Edit as needed)</h2>
+            <h2>Vista Previa (Puedes editar el texto)</h2>
             <div class="blog-content" id="blogContent" contenteditable="true"></div>
             <div class="actions">
-                <button id="copyBtn">Copy to Clipboard</button>
-                <button id="createEmailBtn">Create Email Campaign</button>
-                <button id="publishToWPBtn" class="btn btn-success">Publish to WP</button>
-                <button id="saveBtn">Save Blog</button>
+                <button id="copyBtn">Copiar</button>
+                <button id="createEmailBtn">Crear Campaña de Correo</button>
+                <button id="publishToWPBtn" class="btn btn-success">Enviar a WP</button>
+                <button id="saveBtn">Guardar Blog</button>
             </div>
         </section>
         
         <div class="loading" id="loading" style="display: none;">
             <div class="spinner"></div>
-            <p>Generating your blog...</p>
+            <p>Generando tu blog...</p>
         </div>
     </div>
     

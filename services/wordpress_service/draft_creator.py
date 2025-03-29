@@ -1,4 +1,4 @@
-# services/wordpress_service.py
+# services/wordpress_service/wordpress_service.py
 import json
 import subprocess
 import shlex

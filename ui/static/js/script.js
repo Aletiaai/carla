@@ -173,12 +173,25 @@ saveBtn.addEventListener('click', async function() {
                     title: currentBlogData.title || campaign_title
                 }),
             });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Server error:', errorText);
+                alert('Failed to create email campaign. Server error.');
+                return;
+            }
+            const contentType = response.headers.get("content-type");
+            if(contentType && contentType.includes("application/json")) {
+                const result = await response.json();
+                alert('Email campaign created successfully!');
+            } else {
+                console.error("Response was not JSON");
+                alert('Failed to create email campaign. Server error.');
+            }
             
-            const result = await response.json();
-            alert('Email campaign created successfully!');
         } catch (error) {
             console.error('Error:', error);
-            alert('Failed to create email campaign');
+            alert('Failed to create email campaign. Client side error.');
         }
     });
 
