@@ -163,7 +163,7 @@ saveBtn.addEventListener('click', async function() {
         
         try {
             const campaign_title = document.getElementById('topic').value;
-            const response = await fetch('/api/blogs/create-email', {
+            const response = await fetch('/api/blogs/email-campaign', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -211,7 +211,7 @@ saveBtn.addEventListener('click', async function() {
                 contentLength: htmlContent.length
             });
             
-            const response = await fetch('/api/blogs/publish-to-wp', {
+            const response = await fetch('/api/blogs/draft-to-wp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

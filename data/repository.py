@@ -41,24 +41,5 @@ class BlogRepository:
         except Exception as e:
             print(f"Error updating blog: {str(e)}")
             return False
-        
 
-    async def get_blog(self, blog_id: str) -> Optional[Dict[str, Any]]:
-        """Retrieve a blog by ID"""
-        doc = self.collection.document(blog_id).get()
-        if doc.exists:
-            data = doc.to_dict()
-            return {"id": doc.id, **data}
-        return None
-    
-    async def list_blogs(self, user_id: str, limit: int = 10) -> List[Dict[str, Any]]:
-        """List blogs for a specific user"""
-        query = (
-            self.collection
-            .where("created_by", "==", user_id)
-            .order_by("created_at", direction=firestore.Query.DESCENDING)
-            .limit(limit)
-        )
-        docs = query.stream()
-        return [{"id": doc.id, **doc.to_dict()} for doc in docs]
     

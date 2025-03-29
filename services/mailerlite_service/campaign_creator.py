@@ -11,7 +11,7 @@ class MailerLiteService:
     async def create_campaign(self, subject, content, sender_name="Gema", sender_email="marko.garcia@gmail.com"):
         params = {
             "name": subject,
-            "language_id": 5,
+            "language_id": 6,
             "type": "regular",
             "emails": [{
                 "subject": subject,

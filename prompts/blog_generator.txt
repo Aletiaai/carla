@@ -20,9 +20,9 @@ Instructions:
 
 - Formatting for WordPress:  
   - Use sentence-case capitalization for the title and subheadings.  
-  - Left-align all text.  
-  - Use bullets as "&bull;"
-  - Ensure consistent line spacing, use only one line space after each title or subtitle.  
+  - Justify-align all text.
+  - Use letter type Montserrat 
+  - Ensure consistent line spacing.  
   - Use formating elements described below for emphasis of text.  
   - Capitalize company, product, brand names, and trademarks appropriately.  
   - Use capital letters where necessary.

@@ -99,7 +99,7 @@ async def save_blog(
             content={"status": "error", "message": str(e)}
         )
     
-@router.post("/create-email")
+@router.post("/email-campaign")
 async def create_email_campaign(request: dict, mailerlite = Depends(dependencies.get_mailerlite_service)):
     try:
         content = request.get("content")
@@ -116,7 +116,7 @@ async def create_email_campaign(request: dict, mailerlite = Depends(dependencies
         
 
 
-@router.post("/publish-to-wp")
+@router.post("/draft-to-wp")
 async def publish_to_wordpress(request: dict = Body(...), wordpress = Depends(dependencies.get_wordpress_service)):
     """Create a draft post in WordPress"""
     try:
