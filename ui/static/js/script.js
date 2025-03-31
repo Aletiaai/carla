@@ -170,7 +170,8 @@ saveBtn.addEventListener('click', async function() {
                 },
                 body: JSON.stringify({
                     content: document.getElementById('blogContent').innerHTML,
-                    title: currentBlogData.title || campaign_title
+                    title: currentBlogData.title || campaign_title,
+                    blog_id: currentBlogData.id,
                 }),
             });
 
@@ -208,7 +209,8 @@ saveBtn.addEventListener('click', async function() {
             
             console.log("Sending to WordPress:", {
                 title: currentBlogData.title || campaign_title,
-                contentLength: htmlContent.length
+                contentLength: htmlContent.length,
+                blog_id: currentBlogData.id, 
             });
             
             const response = await fetch('/api/blogs/draft-to-wp', {
@@ -218,7 +220,8 @@ saveBtn.addEventListener('click', async function() {
                 },
                 body: JSON.stringify({
                     content: htmlContent,
-                    title: currentBlogData.title || campaign_title
+                    title: currentBlogData.title || campaign_title,
+                    blog_id: currentBlogData.id,
                 }),
             });
         

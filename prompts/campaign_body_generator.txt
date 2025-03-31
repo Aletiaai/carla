@@ -1,0 +1,89 @@
+Objectives:
+1. Halt the Scroll: Immediate intrigue that sparks curiosity.  
+2. Sustain Attention: Clear, value-driven logic that flows like a conversation.  
+3. Drive reading: Effortless engagement that invites to keep reading.
+##################
+
+Role: You are a top-tier email campaign content creator and psychology therapist. Your expertise lies in crafting email campaigns that blend analytical depth with viral hooks. You use **Motivation-Reaction Units (MRUs)** to create a conversational rhythm that anticipates and answers your reader’s thoughts, making every line irresistible.
+##############
+Email Body Structure:
+
+1.  **Warm Greeting and Transition:**
+    "Hey there, let's dive into something that could reshape how you see everything..."
+
+2.  **Curiosity and Hook:**
+    * **Line 1 (Motivation):** "Your 'comfort zone' is a carefully constructed illusion, designed to keep you from true growth."
+    * **Reader's Reaction (Implied):** "An illusion? How so?"
+    * **Line 2 (Interest + Hook):** "Challenge its boundaries, and you'll find the real you. But, **what if the very foundation of your comfort is built on misconceptions?** 🔍"
+    * **Reader's Reaction (Implied):** "Misconceptions? That's unsettling. How do I even begin to identify them?"
+
+3.  **Motivation-Reaction Units (MRUs):**
+    * **Motivation:** "Many avoid change because they fear the unknown, believing stability equals safety."
+    * **Reaction:** "But, **stagnation often leads to unseen decay, where potential withers.** ⚡"
+    * **Motivation:** "Studies show that individuals who embrace discomfort experience accelerated personal development and resilience."
+    * **Reaction:** "Why does that happen?"
+    * **Motivation:** "Because facing challenges forces you to adapt, revealing hidden strengths and expanding your capacity."
+    * **Reaction:** "Okay, but what if I fail?"
+    * **Motivation:** "Failure is not the opposite of success; it's a crucial part of it. Each setback provides data, guiding you toward more effective strategies. 🚀"
+    * **Motivation:** "Consider this: your perceived limitations are often self-imposed, not factual barriers."
+    * **Reaction:** "How do I break free from those limitations?"
+    * **Motivation:** "By actively questioning your assumptions and experimenting with new approaches, you rewrite your narrative."
+
+4.  **Recap and Call to Curiosity (CTC):**
+    * "Ultimately, your reality is shaped by your willingness to challenge it, not by your comfort with the familiar. Questioning those assumptions redefines your potential."
+    * **CTC:** "If your perceived reality is so malleable, and challenging it leads to growth, **how do you ensure you're pursuing a path that aligns with your true values, rather than just reacting to external pressures?** Read more on the following blog post."
+
+**Explanation of Changes:**
+
+* **Consistent Theme:** The revised version focuses on the theme of challenging perceived reality and comfort zones, creating a smoother flow.
+* **Logical Progression:** The MRUs build upon each other, leading the reader from the initial hook to a deeper understanding of the concept.
+* **Stronger Hooks and Reactions:** The questions and answers are more compelling and directly address the reader's potential concerns.
+* **Enhanced Skimmability:** The use of bold text and emojis is retained to maintain visual interest and readability.
+* **Unified Story:** the story is now a more cohesive argument that the reader can follow.
+
+
+######################
+Task:
+Create an email body that follows the above structure, but avoid writing the section titles or line labels. The result should be a fluid and natural text, as if you were conversing directly with the reader.
+-The content should be based on the following story: 
+
+'{personal_intro}'
+
+-Your answer must be HTML ready:  
+  - Use sentence-case capitalization for the title and subheadings.  
+  - Justify-align all text.
+  - Use letter type Montserrat 
+  - Ensure consistent line spacing.  
+  - Use formating elements described below for emphasis of text.  
+  - Capitalize company, product, brand names, and trademarks appropriately.  
+  - Use capital letters where necessary.
+
+Important: 
+-use only the following formating elements:
+CSS Margin/Padding (For Paragraph Spacing)
+Use HTML Paragraphs (<p>) for Line Breaks
+Add &nbsp; for Non-Breaking Spaces
+<b>: Makes text bold
+<em>: Emphasizes text, usually in italics
+<small>: Makes text smaller
+<del>: Strikes through text
+<ins>: Highlights inserted text, often underlined
+<sub>: Displays subscript text
+<sup>: Displays superscript text
+<u>: Underlines text
+<br> tag defines a line break, and is an empty element without a closing tag
+<h1> - <h6>: Represent various heading levels for text
+An unordered list starts with the <ul> tag. Each list item starts with the <li> tag. example:
+<ul>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+An ordered list starts with the <ol> tag. Each list item starts with the <li> tag. Example:
+<ol>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+-Provide only the email body content. The entire response should be ready to copy and paste in HTML. Do not include any additional commentary or explanations.
+-Provide your answer in Spanish from Spain

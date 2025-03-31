@@ -4,12 +4,10 @@ from typing import Dict, Any
 from data.repository import BlogRepository
 from core.config import settings
 from pydantic import BaseModel
-from services.mailerlite_service.campaign_creator import extract_title_from_content, extract_campaign_content
 import traceback
 from . import dependencies
 import re
 from services.blog_service.generator import BlogGenerator
-
 
 router = APIRouter()
 
@@ -100,42 +98,78 @@ async def save_blog(
         )
     
 @router.post("/email-campaign")
-async def create_email_campaign(request: dict, mailerlite = Depends(dependencies.get_mailerlite_service)):
+async def create_email_campaign(request: dict, mailerlite = Depends(dependencies.get_mailerlite_service), blog_repository = Depends(dependencies.get_blog_repository)):
     try:
-        content = request.get("content")
-        title = extract_title_from_content(content)
-        campaign_content = extract_campaign_content(content)
-        print(title)
-        print(campaign_content)
+        raw_content = request.get("content")
+        blog_id = request.get("blog_id")  # Get blog_id from request
 
-        result = await mailerlite.create_campaign(subject=title, content=campaign_content)
+        if not blog_id:
+            return JSONResponse(
+                status_code=400,
+                content={"status": "error", "message": "blog_id is required"}
+            )
+        # Get the blog post from Firestore
+        blog_post = await blog_repository.get_blog_post(blog_id)
+        if not blog_post:
+            return JSONResponse(
+                status_code=404,
+                content={"status": "error", "message": f"Blog post with id {blog_id} not found"}
+            )
+        post_id = blog_post.get("post_id")
+        if not post_id:
+            return JSONResponse(
+                status_code=404,
+                content={"status": "error", "message": f"post_id not found for blog post with id {blog_id}"}
+            )
+        
+        result = await mailerlite.create_campaign(content=raw_content, post_id=post_id)
         return {"status": "success", "campaign": result}
     except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
         print(f"Error creating email campaign: {str(e)}")
-        return {"status": "error", "message": "Internal server error", "details": str(e)}
+        print(error_details)
+        return JSONResponse(
+            status_code=500,
+            content={"status": "error", "message": "Internal server error", "details": str(e)}
+        )
         
 
 
 @router.post("/draft-to-wp")
-async def publish_to_wordpress(request: dict = Body(...), wordpress = Depends(dependencies.get_wordpress_service)):
+async def publish_to_wordpress(request: dict = Body(...), wordpress = Depends(dependencies.get_wordpress_service), blog_repository: BlogRepository = Depends(dependencies.get_blog_repository)):
     """Create a draft post in WordPress"""
     try:
         content = request.get("content")
         title = request.get("title")
+        blog_id = request.get("blog_id") #get blog_id from the request.)
+        print(f"Received title: {title}")
+        print(f"Received blog_id: {blog_id}")
+        
 
-        if not content or not title:
+        if not content or not title or not blog_id:
             return JSONResponse(
                 status_code=400,
-                content={"status": "error", "message": "Content and title are required"}
+                content={"status": "error", "message": "Content, title and blog_id are required"}
             )
         result = await wordpress.create_post(title=title, content=content)
+        post_id = result['id'] #get the post id from wordpress.
+        print(f"Received post_id: {post_id}")
+
+        # Retrieve the post link using the new function
+        post_link = await dependencies.get_wordpress_post_link(post_id)
+        print(f"Received post_link: {post_link}")
         
+        await blog_repository.update_final_content(blog_id=blog_id, final_content = "", post_id = post_id) #update the firestore document with the post id.
+
         return JSONResponse(content={"status": "success", "post": result})
+        
     except Exception as e:
         import traceback
         error_details = traceback.format_exc()
-        print(f"WordPress error: {str(e)}")
-        print(error_details)   
+        print(f"WordPress error before exception: {str(e)}") # added logging before the exception.
+        print(error_details)
+        print(f"WordPress error after exception: {str(e)}") # added logging after the exception.
         return JSONResponse(
             status_code=500,
             content={"status": "error", "message": str(e),"details": error_details}

@@ -3,6 +3,7 @@ import json
 import subprocess
 import shlex
 import pipes
+import os
 from core.config import settings
 
 class WordPressService:
@@ -47,7 +48,6 @@ class WordPressService:
             stdout, stderr = process.communicate()
             
             # Clean up the temp file
-            import os
             os.unlink(temp_path)
             
             if process.returncode != 0:
