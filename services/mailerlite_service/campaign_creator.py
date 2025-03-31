@@ -33,8 +33,9 @@ class MailerLiteService:
         try:
             post_link = await dependencies.get_wordpress_post_link(post_id)
             print(f"Received post_link: {post_link}")
-            email_body = await self._generate_email_body(seed_content) 
-            link_html = f"""<div style="text-align: justify; font-family: Montserrat;"><a href="{escape(post_link)}" style="color: #0066cc; text-decoration: none;"><b>Sigue leyendo aquí →</b></a></div>"""
+            email_body = await self._generate_email_body(seed_content)
+            link_html = create_button_html(post_link)
+            #link_html = f"""<div style="text-align: justify; font-family: Montserrat;"><a href="{escape(post_link)}" style="color: #0066cc; text-decoration: none;"><b>Sigue leyendo aquí →</b></a></div>"""
             enhance_content = email_body + link_html
 
         except Exception as e:
@@ -92,3 +93,19 @@ def _clean_email_body(email_body: str) -> str:
     if email_body.endswith("```"):
         email_body = email_body[:-3]  # Remove last 3 characters
     return email_body.strip()
+
+from html import escape
+
+def create_button_html(post_link, button_text="Sigue leyendo aquí →"):
+  """
+  Creates an HTML button with a link."""
+  link_html = f"""
+  <div style="text-align: center; font-family: Montserrat;">
+    <a href="{escape(post_link)}" style="text-decoration: none;">
+      <button style="background-color: #335d55; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-family: Montserrat; font-weight: bold;">
+        {button_text}
+      </button>
+    </a>
+  </div>
+  """
+  return link_html

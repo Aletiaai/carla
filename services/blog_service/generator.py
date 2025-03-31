@@ -31,6 +31,12 @@ class BlogGenerator:
         
     def _structure_blog_content(self, content: str) -> Dict[str, Any]:
         """Parse the generated content into a structured format"""
+
+        if content.startswith("```html"):
+            content = content[7:]  # Remove first 7 characters
+        if content.endswith("```"):
+            content = content[:-3]  # Remove last 3 characters
+
         lines = content.strip().split('\n')
         
         # Extract title (first # heading)
