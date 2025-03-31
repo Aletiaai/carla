@@ -104,57 +104,59 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-saveBtn.addEventListener('click', async function() {
-    if (!currentBlogData || !currentBlogData.id) {
-        alert('No blog data available to save.');
-        console.error('❌ Error: currentBlogData is missing or has no ID.', currentBlogData);
-        return;
-    }
-
-    // Get the edited content as plain text
-    const blogContentElement = document.getElementById('blogContent');
-    const finalContent = blogContentElement.textContent || blogContentElement.innerText;
-
-
-    // Debugging logs
-    console.log('🔵 Sending Save Request with:');
-    console.log('   - blog_id:', currentBlogData.id);
-    console.log('   - final_content length:', finalContent.length);
-
-    try {
-        const response = await fetch('/api/blogs/save', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                blog_id: currentBlogData.id,
-                final_content: finalContent,
-                user_id: 'default_user' // Optional, if needed
-            })
-        });
-
-        console.log('📡 Server response status:', response.status);
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('❌ Server error:', errorText);
-            throw new Error(`Server error: ${response.status} - ${errorText}`);
+    // Save blog
+    saveBtn.addEventListener('click', async function() {
+        if (!currentBlogData || !currentBlogData.id) {
+            alert('No blog data available to save.');
+            console.error('❌ Error: currentBlogData is missing or has no ID.', currentBlogData);
+            return;
         }
 
-        const result = await response.json();
-        console.log('✅ Save result:', result);
+        // Get the edited content as plain text
+        const blogContentElement = document.getElementById('blogContent');
+        const finalContent = blogContentElement.textContent || blogContentElement.innerText;
 
-        if (result.status === 'success') {
-            alert('Blog saved successfully!');
-        } else {
-            throw new Error(result.message || 'Unknown error');
+
+        // Debugging logs
+        console.log('🔵 Sending Save Request with:');
+        console.log('   - blog_id:', currentBlogData.id);
+        console.log('   - final_content length:', finalContent.length);
+
+        try {
+            const response = await fetch('/api/blogs/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    blog_id: currentBlogData.id,
+                    final_content: finalContent,
+                    user_id: 'default_user', // Optional, if needed
+                    post_id: null
+                })
+            });
+
+            console.log('📡 Server response status:', response.status);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('❌ Server error:', errorText);
+                throw new Error(`Server error: ${response.status} - ${errorText}`);
+            }
+
+            const result = await response.json();
+            console.log('✅ Save result:', result);
+
+            if (result.status === 'success') {
+                alert('Blog saved successfully!');
+            } else {
+                throw new Error(result.message || 'Unknown error');
+            }
+        } catch (error) {
+            console.error('🔥 Error saving blog:', error);
+            alert('Error saving blog: ' + error.message);
         }
-    } catch (error) {
-        console.error('🔥 Error saving blog:', error);
-        alert('Error saving blog: ' + error.message);
-    }
-});
+    });
 
 
     // Email campaign handler
@@ -198,53 +200,93 @@ saveBtn.addEventListener('click', async function() {
 
     // Publish to WP buton handler
     publishToWPBtn.addEventListener('click', async () => {
-        if (!currentBlogData) return;
+        if (!currentBlogData || !currentBlogData.id) {
+            alert('No blog data available to save and publish.');
+            console.error('❌ Error: currentBlogData is missing or has no ID.', currentBlogData);
+            return;
+        }
     
         try {
             const campaign_title = document.getElementById('topic').value;
-            const blogContent = document.getElementById('blogContent');
+            const blogContentElement = document.getElementById('blogContent');
             
-            // Get the raw HTML content
-            const htmlContent = blogContent.innerHTML;
-            
+            // Get the content in both formats we need
+            const finalContent = blogContentElement.textContent || blogContentElement.innerText; // Plain text for database
+            const htmlContent = blogContentElement.innerHTML; // HTML for WordPress
+
+            console.log('🔵 Step 1: Saving to database first');
+            console.log('   - blog_id:', currentBlogData.id);
+            console.log('   - final_content length:', finalContent.length);
+
+            // Step 1: Save to database first
+            const saveResponse = await fetch('/api/blogs/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    blog_id: currentBlogData.id,
+                    final_content: finalContent,
+                    user_id: 'default_user', // Optional, if needed
+                    post_id: 0 // Default value to satisfy the integer requirement
+                })
+            });
+
+            console.log('📡 Database save response status:', saveResponse.status);
+
+            if (!saveResponse.ok) {
+                const errorText = await saveResponse.text();
+                console.error('❌ Database save error:', errorText);
+                throw new Error(`Database save error: ${saveResponse.status} - ${errorText}`);
+            }
+
+            const saveResult = await saveResponse.json();
+            console.log('✅ Database save result:', saveResult);
+
+            if (saveResult.status !== 'success') {
+                throw new Error(saveResult.message || 'Unknown error during database save');
+            }
+
+            // Step 2: Now publish to WordPress
+            console.log('🔵 Step 2: Publishing to WordPress');
             console.log("Sending to WordPress:", {
                 title: currentBlogData.title || campaign_title,
                 contentLength: htmlContent.length,
                 blog_id: currentBlogData.id, 
             });
-            
-            const response = await fetch('/api/blogs/draft-to-wp', {
+
+            const wpResponse = await fetch('/api/blogs/draft-to-wp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     content: htmlContent,
+                    final_content: finalContent, // Send plain text for database
                     title: currentBlogData.title || campaign_title,
                     blog_id: currentBlogData.id,
                 }),
             });
+
+            console.log("WordPress response status:", wpResponse.status);
         
-            // Add more debugging
-            console.log("Response status:", response.status);
-            
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error('Server error:', errorText);
-                throw new Error(`Server error: ${response.status}`);
+            if (!wpResponse.ok) {
+                const errorText = await wpResponse.text();
+                console.error('❌ WordPress error:', errorText);
+                throw new Error(`WordPress error: ${wpResponse.status}`);
             }
 
-            const result = await response.json();
-            console.log("WordPress result:", result);
+            const wpResult = await wpResponse.json();
+            console.log("WordPress result:", wpResult);
             
-            if (result.status === 'success') {
-                alert('Blog post created as draft in WordPress!');
+            if (wpResult.status === 'success') {
+                alert('Blog saved to database and created as draft in WordPress!');
             } else {
-                throw new Error(result.message || 'Unknown error');
+                throw new Error(wpResult.message || 'Unknown error during WordPress publishing');
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('Failed to publish to WordPress: ' + error.message);
+            console.error('🔥 Error in save and publish process:', error);
+            alert('Error: ' + error.message);
         }
-    });
+    }); 
 });

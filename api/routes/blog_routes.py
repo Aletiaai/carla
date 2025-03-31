@@ -23,6 +23,7 @@ class BlogUpdateRequest(BaseModel):
     blog_id: str
     final_content: str
     user_id: str = "default_user"  # In a real app, get this from auth
+    post_id: int = None
 
 @router.post("/generate")
 async def generate_blog(
@@ -77,7 +78,8 @@ async def save_blog(
         # Update the blog content
         success = await blog_repository.update_final_content(
             request.blog_id,
-            request.final_content
+            request.final_content,
+            request.post_id
         )
         
         if success:
@@ -142,34 +144,61 @@ async def publish_to_wordpress(request: dict = Body(...), wordpress = Depends(de
     try:
         content = request.get("content")
         title = request.get("title")
-        blog_id = request.get("blog_id") #get blog_id from the request.)
+        blog_id = request.get("blog_id")
+        final_content = request.get("final_content")
+        post_id = request.get("post_id")
+
         print(f"Received title: {title}")
         print(f"Received blog_id: {blog_id}")
-        
+        print(f"Received post_id: {post_id}")    
 
         if not content or not title or not blog_id:
             return JSONResponse(
                 status_code=400,
                 content={"status": "error", "message": "Content, title and blog_id are required"}
             )
+        
+        # First save to database if final_content is provided
+        if final_content:
+            print(f"Saving to database first, content length: {len(final_content)}")
+            save_success = await blog_repository.update_final_content(
+                blog_id,
+                final_content,
+                post_id
+            )
+            if not save_success:
+                return JSONResponse(
+                    status_code=404,
+                    content={"status": "error", "message": "Blog not found or database save failed"}
+                )
+        # Then publish to WordPress
         result = await wordpress.create_post(title=title, content=content)
         post_id = result['id'] #get the post id from wordpress.
         print(f"Received post_id: {post_id}")
 
-        # Retrieve the post link using the new function
+        # Retrieve the post link
         post_link = await dependencies.get_wordpress_post_link(post_id)
         print(f"Received post_link: {post_link}")
-        
-        await blog_repository.update_final_content(blog_id=blog_id, final_content = "", post_id = post_id) #update the firestore document with the post id.
 
-        return JSONResponse(content={"status": "success", "post": result})
+        # Update the firestore document with the post id
+        # Note: If final_content was already saved above, this will just update the post_id
+        await blog_repository.update_final_content(
+            blog_id=blog_id,
+            final_content = final_content or "",
+            post_id = post_id) #update the firestore document with the post id.
+
+        return JSONResponse(content={
+            "status": "success",
+            "message": "Content saved to database and published to WordPress",
+            "post": result,
+            "post_link": post_link
+        })
         
     except Exception as e:
         import traceback
         error_details = traceback.format_exc()
-        print(f"WordPress error before exception: {str(e)}") # added logging before the exception.
+        print(f"WordPress error: {str(e)}") # added logging before the exception.
         print(error_details)
-        print(f"WordPress error after exception: {str(e)}") # added logging after the exception.
         return JSONResponse(
             status_code=500,
             content={"status": "error", "message": str(e),"details": error_details}
