@@ -35,7 +35,6 @@ class MailerLiteService:
             print(f"Received post_link: {post_link}")
             email_body = await self._generate_email_body(seed_content)
             link_html = create_button_html(post_link)
-            #link_html = f"""<div style="text-align: justify; font-family: Montserrat;"><a href="{escape(post_link)}" style="color: #0066cc; text-decoration: none;"><b>Sigue leyendo aquí →</b></a></div>"""
             enhance_content = email_body + link_html
 
         except Exception as e:

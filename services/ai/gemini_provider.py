@@ -17,13 +17,13 @@ class GeminiProvider(AIProvider):
         if api_key and api_key.strip() and api_key != "":
             # Configure with API key
             genai.configure(api_key=api_key)
-            self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
+            self.model = genai.GenerativeModel('gemini-2.0-flash-exp-image-generation')
             print("Successfully initialized GeminiProvider with API key")
         else:
             # Fall back to service account
             try:
                 genai.configure()  # No arguments needed
-                self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
+                self.model = genai.GenerativeModel('gemini-2.0-flash-exp-image-generation')
                 print("Successfully initialized GeminiProvider with service account from environment variable")
             except Exception as e:
                 print(f"Error initializing GeminiProvider: {e}")
