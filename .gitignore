@@ -3,3 +3,9 @@ venv/
 favicon.ico
 .venv/
 .env
+*.json
+*.pyc
+__pycache__/
+.git
+.gitignore
+README.md
