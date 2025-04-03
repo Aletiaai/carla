@@ -21,6 +21,8 @@ steps:
       - '--memory=1Gi'
       - '--cpu=1'
       - '--port=8000'
+      - '--service-account=marko-414@$PROJECT_ID.iam.gserviceaccount.com'
+      - '--update-secrets=GEMINI_API_KEY=GEMINI_API_KEY:latest,FIRESTORE_PROJECT_ID=FIRESTORE_PROJECT_ID:latest,MAILERLITE_API_KEY=MAILERLITE_API_KEY:latest,WP_API_URL=WP_API_URL:latest,WP_USERNAME=WP_USERNAME:latest,WP_PASSWORD=WP_PASSWORD:latest'
 
 images:
   - 'europe-west1-docker.pkg.dev/$PROJECT_ID/carla-repo/carla-app:$COMMIT_SHA'
