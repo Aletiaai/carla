@@ -22,13 +22,7 @@ class GeminiProvider(AIProvider):
         else:
             # Fall back to service account
             try:
-                genai.configure(
-                    transport='grpc',
-                    client_options={
-                        'api_endpoint': 'generativelanguage.googleapis.com',
-                        'quota_project_id': 'carla-452511'
-                    }
-                )
+                genai.configure()  # No arguments needed
                 self.model = genai.GenerativeModel('gemini-2.0-flash-exp-image-generation')
                 print("Successfully initialized GeminiProvider with service account from environment variable")
             except Exception as e:
