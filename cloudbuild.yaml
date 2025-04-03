@@ -22,12 +22,6 @@ steps:
       - '--cpu=1'
       - '--port=8000'
       - '--service-account=marko-414@$PROJECT_ID.iam.gserviceaccount.com'
-      - '--update-secrets=GEMINI_API_KEY=gemini-api-key-secret:latest' # Replace 'gemini-api-key-secret' with your secret name
-      - '--update-secrets=FIRESTORE_PROJECT_ID=firestore-project-id-secret:latest'
-      - '--update-secrets=MAILERLITE_API_KEY=mailerlite-api-key-secret:latest'
-      - '--update-secrets=WP_API_URL=wp-api-url-secret:latest'
-      - '--update-secrets=WP_USERNAME=wp-username-secret:latest'
-      - '--update-secrets=WP_PASSWORD=wp-password-secret:latest'
 
 images:
   - 'europe-west1-docker.pkg.dev/$PROJECT_ID/carla-repo/carla-app:$COMMIT_SHA'
