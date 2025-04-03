@@ -1,23 +1,35 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from api.routes.blog_routes import router as blog_router
 from core.config import settings
 import os
 
-app = FastAPI(title=settings.APP_NAME, debug=settings.DEBUG_MODE)
+app = FastAPI(
+    title=settings.APP_NAME,
+    debug=settings.DEBUG_MODE,
+    servers=[
+        {
+            "url": "https://carla-app-3yywngljtq-ew.a.run.app",
+            "description": "Production Cloud Run URL"
+        }
+    ]
+)
 
 # Mount static files
-app.mount("/static", StaticFiles(directory="ui/static"), name="static")
+app.mount(
+    "/static",
+    StaticFiles(directory="ui/static"),
+    name="static"
+)
 
-# Set up templates
+# Configure templates with HTTPS awareness
 templates = Jinja2Templates(directory="ui/templates")
+templates.env.globals["url_for"] = app.url_path_for  # Ensures HTTPS URLs
 
-# Import and include routers
-from api.routes.blog_routes import router as blog_router
+
+# Include routers
 app.include_router(blog_router, prefix="/api/blogs", tags=["blogs"])
-
-# Root path for UI
-from fastapi import Request
 
 @app.get("/")
 async def root(request: Request):
